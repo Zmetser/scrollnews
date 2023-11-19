@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expanding Scroll Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <ol id="articles">
+    <!-- (li[role=article]>(header>h2>{\#$}+lorem6)+(p>lorem))*100 -->
+
+  </ol>
+
+  <template id="newsitem">
+    <li class="newsitem" role="article">
+      <header class="header">
+        <h2 class="title js_title"></h2>
+      </header>
+      <p class="lead js_lead"></p>
+      <figure class="media-container">
+        <img class="js_media js_lazy" loading="lazy">
+      </figure>
+      <footer class="source js_source"></footer>
+    </li>
+  </template>
+
+  <script src="./data.js"></script>
+  <script src="./renderer.js"></script>
+  <script src="./index.js"></script>
+
+</body>
+</html>

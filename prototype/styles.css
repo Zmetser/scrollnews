@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  max-height: 100vh;
+}
+
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0
+}
+
+li {
+  border: 1px solid moccasin;
+}
+
+li p {
+  display: none
+}
+
+li.active p {
+  display: block;
+}
+
+.center-collider {
+  position: fixed;
+  width: 100vw;
+  height: 1px;
+  background-color: red;
+  top: 50vh;
+}

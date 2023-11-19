@@ -1,0 +1,82 @@
+/* Animation -timeline: view, scroll
+
+Scroll driven animation visualiser  */
+
+body {
+  margin: 0;
+}
+
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0
+}
+
+.articles {
+}
+
+.articles li {
+  /* Appear/disappear around the edges */
+  /* animation: linear animate-in-and-out;
+	animation-timeline: view(); */
+
+  view-timeline-name: --li-in-and-out-of-view;
+	view-timeline-axis: y;
+}
+.articles li {
+  animation: linear animate-appear-and-disappear both;
+	animation-timeline: --li-in-and-out-of-view;
+}
+
+.articles p {
+  height: 0;
+  overflow: hidden;
+  animation: linear slideaway both;
+	animation-timeline: --li-in-and-out-of-view;
+}
+
+/* Keyframes */
+@keyframes slideaway {
+  0%  {
+		height: 0;
+	}
+  39%  {
+		height: 0;
+	}
+  40%  {
+		height: 75px;
+	}
+  60%  {
+		height: 75px;
+	}
+  61%  {
+		height: 0;
+	}
+	100%  {
+		height: 0;
+	}
+}
+
+@keyframes animate-appear-and-disappear {
+	0%  {
+		opacity: 0;
+	}
+  40%  {
+		opacity: 1;
+	}
+  55%  {
+		opacity: 1;
+	}
+	100%  {
+		opacity: 0;
+	}
+}
+
+/* Debug */
+.center-collider {
+  position: fixed;
+  width: 100vw;
+  height: 1px;
+  background-color: red;
+  top: 50vh;
+}
