@@ -11,9 +11,13 @@
 </head>
 <body>
 
+  <div id="debug" style="display: none">
+    <div class="root-margin root-margin-top">70%</div>
+    <div class="root-margin root-margin-bottom">30%</div>
+  </div>
+
   <ol id="articles">
     <!-- (li[role=article]>(header>h2>{\#$}+lorem6)+(p>lorem))*100 -->
-
   </ol>
 
   <template id="newsitem">
@@ -21,10 +25,12 @@
       <header class="header">
         <h2 class="title js_title"></h2>
       </header>
-      <p class="lead js_lead"></p>
-      <figure class="media-container">
-        <img class="js_media js_lazy" loading="lazy">
-      </figure>
+      <div class="details">
+        <p class="lead js_lead"></p>
+        <figure class="media-container">
+          <img class="js_media js_lazy" loading="lazy">
+        </figure>
+      </div>
       <footer class="source js_source"></footer>
     </li>
   </template>
