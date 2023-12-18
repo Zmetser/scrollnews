@@ -2,6 +2,7 @@ window.DEBUG = false;
 
 const articlesContainer = document.getElementById("articles");
 const temak = [...new Set(data.map(item => item.tema))];
+// const dataByTema = temak.map(tema => data.filter(item => item.tema === tema));
 
 let fragment = new DocumentFragment();
 const html = data.forEach((item) => {
