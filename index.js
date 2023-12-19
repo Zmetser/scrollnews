@@ -13,8 +13,7 @@ export class App extends LitElement {
   }
 
   static get styles() {
-    return css`
-    `
+    return css``
   }
 }
 

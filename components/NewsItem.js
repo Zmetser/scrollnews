@@ -26,7 +26,7 @@ export class NewsItem extends LitElement {
           <!-- TODO: Add relative time somewhere -->
           <!-- TODO: add media back -->
           <figure class="media-container">
-            <img class="js_media js_lazy" loading="lazy">
+            <img class="js_media js_lazy" loading="lazy" />
           </figure>
         </div>
         <!-- TODO: source should take me to the article, or the source home? -->
@@ -76,7 +76,7 @@ export class NewsItem extends LitElement {
       }
 
       .source {
-        font-size: .75rem;
+        font-size: 0.75rem;
         font-family: 'Roboto Condensed', sans-serif;
         line-height: 1.3;
         order: 1;
@@ -91,7 +91,7 @@ export class NewsItem extends LitElement {
         height: 1em;
         display: block;
         background-color: var(--topic-color, var(--topic-0));
-        margin-right: .5em;
+        margin-right: 0.5em;
       }
 
       .lead {
@@ -104,7 +104,8 @@ export class NewsItem extends LitElement {
         max-height: 0;
         opacity: 0;
         overflow: hidden;
-        transition: max-height var(--animation-duration), opacity var(--animation-duration);
+        transition: max-height var(--animation-duration),
+          opacity var(--animation-duration);
       }
 
       .media-container {
@@ -114,23 +115,22 @@ export class NewsItem extends LitElement {
         margin: 0;
         justify-self: center;
       }
-        .media-container img {
-          width: 100%;
-          object-fit: cover;
-          object-position: center;
-          aspect-ratio: var(--media-ratio);
+      .media-container img {
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+        aspect-ratio: var(--media-ratio);
 
-          opacity: 0;
-          transition: opacity var(--animation-duration);
-          will-change: opacity;
-        }
+        opacity: 0;
+        transition: opacity var(--animation-duration);
+        will-change: opacity;
+      }
 
       .lead,
       .source,
       .header {
         grid-column: 1 / span 2;
       }
-
     `
   }
 }
