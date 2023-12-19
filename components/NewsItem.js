@@ -21,6 +21,12 @@ export class NewsItem extends LitElement {
     this._observer.value.observe(this)
   }
 
+  disconnectedCallback() {
+    // disconnect the observer when the component is disconnected
+    this._observer.value.unobserve(this)
+    super.disconnectedCallback()
+  }
+
   render() {
     return html`
       <li
