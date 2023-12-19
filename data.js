@@ -3,10 +3,14 @@
 // change the keys in the object
 function translateKeys(data) {
   return data.map((item) => {
-    const newItem = {}
-    newItem.topic = item.tema
-    newItem.source = item.forras
-    newItem.title = item.cim
+    const keysToReplace = ['tema', 'forras', 'cim']
+    const newKeys = ['topic', 'source', 'title']
+    const newItem = { ...item }
+    // replace keysToReplace in the object with newKeys
+    keysToReplace.forEach((key, index) => {
+      newItem[newKeys[index]] = newItem[key]
+      delete newItem[key]
+    })
     return newItem
   })
 }

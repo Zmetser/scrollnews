@@ -1,27 +1,37 @@
 import { LitElement, html, css } from 'lit'
+import { classMap } from 'lit/directives/class-map.js'
+import { ContextConsumer } from '@lit/context'
+
+import { scrollObserverContext } from '../utils/contexts'
 
 export class NewsItem extends LitElement {
-  static get properties() {
-    return {
-      // TODO: figure put how this works without the type. I have a dot before the property name, dafuq is that?
-      // item: { type: Object }
+  // create a new context consumer for the intersection observer
+  _observer = new ContextConsumer(this, { context: scrollObserverContext })
+
+  static properties = {
+    item: { type: Object },
+    isActive: {
+      type: Boolean,
+      attribute: 'is-active'
     }
   }
 
-  constructor(item) {
-    super()
-    // TODO: maybe lit doesn't like Object properties?
-    this.item = item
+  // observe the element when it is first updated
+  firstUpdated() {
+    this._observer.value.observe(this)
   }
 
   render() {
     return html`
-      <li class="newsitem" role="article">
+      <li
+        class="newsitem ${classMap({ active: this.isActive })}"
+        role="article"
+      >
         <header class="header">
           <h2 class="title">${this.item.title}</h2>
         </header>
         <div class="details">
-          <!-- Add a read more permalink -->
+          <!-- TODO: Add a read more permalink -->
           <p class="lead">${this.item.lead}</p>
           <!-- TODO: Add relative time somewhere -->
           <!-- TODO: add media back -->
@@ -44,7 +54,8 @@ export class NewsItem extends LitElement {
 
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: fit-content(1em) 1fr 0;
+        /* grid-template-rows: fit-content(1em) 1fr 0; */
+        grid-template-rows: fit-content(1em) fit-content(1em) 1fr;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         column-gap: 10px;
@@ -53,13 +64,18 @@ export class NewsItem extends LitElement {
         transition: grid-template-rows var(--animation-duration) ease-out;
 
         border-radius: 16px;
+
+        /* Open/close animation */
+        transition: max-height var(--animation-duration),
+          transform var(--animation-duration);
+        will-change: max-height, transform;
+        overflow: hidden;
       }
 
       .details {
         display: grid;
         order: 3;
         min-height: 0;
-        visibility: hidden;
         margin-top: 1.3em;
       }
 
@@ -95,6 +111,7 @@ export class NewsItem extends LitElement {
       }
 
       .lead {
+        display: -webkit-box;
         line-height: 1.3;
         font-family: 'Roboto Condensed', sans-serif;
         font-weight: 400;
@@ -106,6 +123,9 @@ export class NewsItem extends LitElement {
         overflow: hidden;
         transition: max-height var(--animation-duration),
           opacity var(--animation-duration);
+
+        -webkit-line-clamp: var(--max-visible-lead-lines);
+        -webkit-box-orient: vertical;
       }
 
       .media-container {
@@ -130,6 +150,20 @@ export class NewsItem extends LitElement {
       .source,
       .header {
         grid-column: 1 / span 2;
+      }
+
+      .newsitem.active {
+        grid-template-rows: fit-content(1em) fit-content(1em) 1fr;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transform: scale(1.02);
+      }
+
+      .newsitem.active .lead {
+        grid-column: 1;
+        opacity: 1;
+        overflow: hidden;
+        max-height: calc(var(--max-visible-lead-lines) * 1.3 * 1rem);
+        margin-bottom: 0.5em;
       }
     `
   }
