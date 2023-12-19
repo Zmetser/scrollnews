@@ -1,0 +1,147 @@
+/* layout */
+:root {
+  --max-visible-lead-lines: 5;
+  --media-ratio: 16/9;
+  --animation-duration: 0.25s;
+  --opening-duration: 4s;
+
+  /* Topic colors */
+  --topic-0: #005940;
+  --topic-1: #FC9D9A;
+  --topic-2: #FCFFE4;
+  --topic-3: #8F0D45;
+  --topic-4: #FE4365;
+  --topic-5: #83A895;
+  --topic-6: #F9CDAD;
+  --topic-7: #C8C8A9;
+  --topic-8: #83AF9B;
+  --topic-9: #C7F464;
+  --topic-10: #ED95A4;
+}
+
+body {
+  margin: 10px;
+}
+
+
+
+/*
+* design
+*/
+
+body {
+  background-color: var(--main-bg-color);
+}
+
+
+
+news-item.active {
+  grid-template-rows: fit-content(1em) fit-content(1em) 1fr;
+}
+
+news-item.active .details {
+  visibility: visible;
+}
+
+news-item:hover .title {
+  text-decoration: underline;
+}
+
+/* grid */
+
+news-item.active .lead {
+  grid-column: 1;
+}
+
+/*
+* open/close
+*/
+
+news-item {
+  transition: max-height var(--animation-duration), transform var(--animation-duration);
+  will-change: max-height, transform;
+  overflow: hidden;
+}
+
+news-item.active .media-container {
+  margin: 0 0 1.3em 0;
+  width: 100%;
+}
+
+news-item .media-container img.fade-in {
+  opacity: 1;
+}
+
+
+news-item.active {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}
+news-item.active .lead {
+  display: block;
+  opacity: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--max-visible-lead-lines);
+  -webkit-box-orient: vertical;
+  max-height: calc(var(--max-visible-lead-lines) * 1.3 * 1rem);
+  margin-bottom: .5em;
+}
+
+@media only screen and (min-width: 768px) {
+  news-item .details {
+    grid-template-columns: 2fr 1fr;
+    gap: 1em;
+  }
+
+  news-item.active .media-container {
+    max-height: calc(var(--max-visible-lead-lines) * 1.3 * 1rem);
+    margin: 0;
+    order: 2;
+  }
+}
+
+/* Colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-bg-color: #292a2d;
+    --newsitem-bg-color: #1f1f1f;
+    --newsitem-color: #e3e3e3;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --main-bg-color: #f7f8fc;
+    --newsitem-bg-color: #fff;
+    --newsitem-color: #1f1f1f;
+  }
+}
+
+.root-margin {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 4rem;
+  justify-content: flex-start;
+  left: 0;
+  padding-left: 32px;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  transition: height 1s ease;
+  z-index: 0;
+}
+
+.root-margin-top {
+  background-color: #CFCA8A;
+  height: var(--root-margin-top,0);
+  top: 0;
+}
+
+.root-margin-bottom {
+  background-color: #ABA456;
+  bottom: 0;
+  height: var(--root-margin-bottom,0);
+}

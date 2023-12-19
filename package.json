@@ -1,0 +1,24 @@
+{
+  "name": "scrollnews",
+  "version": "0.0.1",
+  "description": "simple app to consume news on a pretty interface",
+  "main": "index.js",
+  "scripts": {
+    "start": "wds --node-resolve --watch",
+    "test": "eslint ."
+  },
+  "author": "Oliver Kovacs <zmetserdev@gmail.com> (www.thezee.hu)",
+  "license": "GNU GPLv3",
+  "dependencies": {
+    "lit": "^3.1.0"
+  },
+  "devDependencies": {
+    "@web/dev-server": "^0.4.1",
+    "eslint": "^8.56.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.4.0",
+    "eslint-plugin-promise": "^6.1.1"
+  },
+  "private": true
+}
