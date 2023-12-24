@@ -6,7 +6,7 @@
   "scripts": {
     "start": "wds --node-resolve --watch",
     "build": "rollup -c",
-    "serve": "wds --app-index docs/index.html --open",
+    "serve:build": "wds --app-index docs/index.html --open",
     "test": "eslint ."
   },
   "author": "Oliver Kovacs <zmetserdev@gmail.com> (www.thezee.hu)",

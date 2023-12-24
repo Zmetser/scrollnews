@@ -23,3 +23,9 @@ npm start
 ```
 
 This will start a local development server now you can open the application in your web browser.
+
+## Test Release
+
+To make a test release sync the `main` branch into the `gh-pages` branch.
+Run the packaging script with `npm run build`, then commit into the gh=pages branch.
+To test the buld run `npm run serve:build`
