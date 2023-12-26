@@ -7,77 +7,21 @@
 
   /* Topic colors */
   --topic-0: #005940;
-  --topic-1: #FC9D9A;
-  --topic-2: #FCFFE4;
-  --topic-3: #8F0D45;
-  --topic-4: #FE4365;
-  --topic-5: #83A895;
-  --topic-6: #F9CDAD;
-  --topic-7: #C8C8A9;
-  --topic-8: #83AF9B;
-  --topic-9: #C7F464;
-  --topic-10: #ED95A4;
+  --topic-1: #fc9d9a;
+  --topic-2: #fcffe4;
+  --topic-3: #8f0d45;
+  --topic-4: #fe4365;
+  --topic-5: #83a895;
+  --topic-6: #f9cdad;
+  --topic-7: #c8c8a9;
+  --topic-8: #83af9b;
+  --topic-9: #c7f464;
+  --topic-10: #ed95a4;
 }
 
 body {
   margin: 10px;
-}
-
-
-
-/*
-* design
-*/
-
-body {
   background-color: var(--main-bg-color);
-}
-
-
-
-news-item.active {
-  grid-template-rows: fit-content(1em) fit-content(1em) 1fr;
-}
-
-news-item.active .details {
-  visibility: visible;
-}
-
-news-item:hover .title {
-  text-decoration: underline;
-}
-
-/* grid */
-
-news-item.active .lead {
-  grid-column: 1;
-}
-
-/*
-* open/close
-*/
-
-news-item.active .media-container {
-  margin: 0 0 1.3em 0;
-  width: 100%;
-}
-
-news-item .media-container img.fade-in {
-  opacity: 1;
-}
-
-
-@media only screen and (min-width: 768px) {
-  news-item .details {
-    grid-template-columns: 2fr 1fr;
-    gap: 1em;
-  }
-
-  news-item.active .media-container {
-    max-height: calc(var(--max-visible-lead-lines) * 1.3 * 1rem);
-    margin: 0;
-    order: 2;
-  }
 }
 
 /* Colors */
@@ -86,6 +30,9 @@ news-item .media-container img.fade-in {
     --main-bg-color: #292a2d;
     --newsitem-bg-color: #1f1f1f;
     --newsitem-color: #e3e3e3;
+
+    --topic-button-bg-color: #292a2d;
+    --topic-button-color: #e3e3e3;
   }
 }
 
@@ -94,6 +41,9 @@ news-item .media-container img.fade-in {
     --main-bg-color: #f7f8fc;
     --newsitem-bg-color: #fff;
     --newsitem-color: #1f1f1f;
+
+    --topic-button-bg-color: #f7f8fc;
+    --topic-button-color: #1f1f1f;
   }
 }
 
@@ -114,13 +64,13 @@ news-item .media-container img.fade-in {
 }
 
 .root-margin-top {
-  background-color: #CFCA8A;
-  height: var(--root-margin-top,0);
+  background-color: #cfca8a;
+  height: var(--root-margin-top, 0);
   top: 0;
 }
 
 .root-margin-bottom {
-  background-color: #ABA456;
+  background-color: #aba456;
   bottom: 0;
-  height: var(--root-margin-bottom,0);
+  height: var(--root-margin-bottom, 0);
 }

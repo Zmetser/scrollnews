@@ -7,4 +7,13 @@ export class Cache {
     const items = localStorage.getItem('items')
     return items ? JSON.parse(items) : []
   }
+
+  static saveTopicsToCache(topics) {
+    localStorage.setItem('topics', JSON.stringify(topics))
+  }
+
+  static getTopicsFromCache() {
+    const topics = localStorage.getItem('topics')
+    return topics ? JSON.parse(topics) : []
+  }
 }

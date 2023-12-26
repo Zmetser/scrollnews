@@ -14,16 +14,29 @@ export const fetchNews = async (signal) => {
     // Save the 10 latest items to cache
     return items.then((items) => {
       Cache.saveItemsToCache(items.slice(0, 10))
-      return items
+      const topics = gatherTopics(items)
+      Cache.saveTopicsToCache(topics)
+      return { items, topics }
     })
   } else {
     // Try to handle the error gracefully by returning cached items
     const itemsFromCache = Cache.getItemsFromCache()
     if (itemsFromCache.length > 0) {
       console.error(response.text())
-      return itemsFromCache
+      return { items: itemsFromCache, topics: Cache.getTopicsFromCache() }
     } else {
       throw response.text()
     }
   }
+}
+
+function gatherTopics(items) {
+  return Array.from(
+    items.reduce((topics, item) => {
+      if (item.topic) {
+        topics.add(item.topic)
+      }
+      return topics
+    }, new Set())
+  ).sort((lhs, rhs) => lhs.localeCompare(rhs))
 }
