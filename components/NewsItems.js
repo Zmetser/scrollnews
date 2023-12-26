@@ -6,6 +6,22 @@ import { scrollObserverContext } from '../utils/contexts'
 import './NewsItem'
 
 export class NewsItems extends LitElement {
+  render() {
+    return html`
+      <ol>
+        <!-- TODO: load data from API, use context -->
+        ${window.data.map(
+          (item) =>
+            html`<news-item
+              data-id="${item.id}"
+              ?is-active=${this._activeItem === item.id}
+              .item=${item}
+            ></news-item>`
+        )}
+      </ol>
+    `
+  }
+
   // create a new context provider for the intersection observer
   _provider = new ContextProvider(this, { context: scrollObserverContext })
 
@@ -51,22 +67,6 @@ export class NewsItems extends LitElement {
         this._activeItem = id
       }
     })
-  }
-
-  render() {
-    return html`
-      <ol>
-        <!-- TODO: load data from API, use context -->
-        ${window.data.map(
-          (item) =>
-            html`<news-item
-              data-id="${item.id}"
-              ?is-active=${this._activeItem === item.id}
-              .item=${item}
-            ></news-item>`
-        )}
-      </ol>
-    `
   }
 
   static get styles() {

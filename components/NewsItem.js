@@ -5,6 +5,26 @@ import { ContextConsumer } from '@lit/context'
 import { scrollObserverContext } from '../utils/contexts'
 
 export class NewsItem extends LitElement {
+  render() {
+    return html`
+      <li
+        class="newsitem ${classMap({ active: this.isActive })}"
+        role="article"
+      >
+        <header class="header">
+          <h2 class="title">${this.item.title}</h2>
+        </header>
+        <div class="details">
+          <!-- TODO: Add a read more permalink -->
+          <p class="lead">${this.item.lead}</p>
+          <!-- TODO: Add relative time somewhere -->
+        </div>
+        <!-- TODO: source should take me to the article, or the source home? -->
+        <footer class="source">${this.item.source}</footer>
+      </li>
+    `
+  }
+
   // create a new context consumer for the intersection observer
   _observer = new ContextConsumer(this, { context: scrollObserverContext })
 
@@ -33,30 +53,6 @@ export class NewsItem extends LitElement {
     // disconnect the observer when the component is disconnected
     this._observer.value.unobserve(this)
     super.disconnectedCallback()
-  }
-
-  render() {
-    return html`
-      <li
-        class="newsitem ${classMap({ active: this.isActive })}"
-        role="article"
-      >
-        <header class="header">
-          <h2 class="title">${this.item.title}</h2>
-        </header>
-        <div class="details">
-          <!-- TODO: Add a read more permalink -->
-          <p class="lead">${this.item.lead}</p>
-          <!-- TODO: Add relative time somewhere -->
-          <!-- TODO: add media back -->
-          <figure class="media-container">
-            <img class="js_media js_lazy" loading="lazy" />
-          </figure>
-        </div>
-        <!-- TODO: source should take me to the article, or the source home? -->
-        <footer class="source">${this.item.source}</footer>
-      </li>
-    `
   }
 
   static get styles() {
