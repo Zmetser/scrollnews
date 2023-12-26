@@ -6,11 +6,13 @@ function translateKeys(data) {
     const keysToReplace = ['tema', 'forras', 'cim']
     const newKeys = ['topic', 'source', 'title']
     const newItem = { ...item }
-    // replace keysToReplace in the object with newKeys
+    // replace keysToReplace in the object with newKeys (I don't like hungarian keys!)
     keysToReplace.forEach((key, index) => {
       newItem[newKeys[index]] = newItem[key]
       delete newItem[key]
     })
+    // randomize image sources
+    newItem.image = `https://source.unsplash.com/random/?news&${Math.random()}`
     return newItem
   })
 }

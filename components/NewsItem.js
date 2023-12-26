@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js'
 import { ContextConsumer } from '@lit/context'
 
 import { scrollObserverContext } from '../utils/contexts'
+import './media/LazyImage'
 
 export class NewsItem extends LitElement {
   render() {
@@ -18,6 +19,7 @@ export class NewsItem extends LitElement {
           <!-- TODO: Add a read more permalink -->
           <p class="lead">${this.item.lead}</p>
           <!-- TODO: Add relative time somewhere -->
+          <lazy-image src="${this.item.image}"></lazy-media>
         </div>
         <!-- TODO: source should take me to the article, or the source home? -->
         <footer class="source">${this.item.source}</footer>
@@ -138,22 +140,17 @@ export class NewsItem extends LitElement {
         -webkit-box-orient: vertical;
       }
 
-      .media-container {
+      lazy-image {
         width: 0;
         aspect-ratio: var(--media-ratio);
         overflow: hidden;
         margin: 0;
         justify-self: center;
       }
-      .media-container img {
-        width: 100%;
-        object-fit: cover;
-        object-position: center;
-        aspect-ratio: var(--media-ratio);
 
-        opacity: 0;
-        transition: opacity var(--animation-duration);
-        will-change: opacity;
+      .active lazy-image {
+        margin: 0 0 1.3em 0;
+        width: 100%;
       }
 
       .lead,
