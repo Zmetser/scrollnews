@@ -10,7 +10,7 @@ export class NewsItems extends LitElement {
     return html`
       <ol>
         <!-- TODO: load data from API, use context -->
-        ${window.data.map(
+        ${this.items.map(
           (item) =>
             html`<news-item
               data-id="${item.id}"
@@ -26,6 +26,7 @@ export class NewsItems extends LitElement {
   _provider = new ContextProvider(this, { context: scrollObserverContext })
 
   static properties = {
+    items: { type: Object },
     // track the active item
     _activeItem: { state: true }
   }

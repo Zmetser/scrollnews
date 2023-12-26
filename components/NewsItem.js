@@ -88,8 +88,11 @@ export class NewsItem extends LitElement {
         display: grid;
         order: 3;
         min-height: 0;
-        margin-top: 1.3em;
       }
+
+        .active .details {
+          margin-top: 1.3em;
+        }
 
       .header {
         order: 2;
