@@ -17,8 +17,8 @@ export class NewsItems extends LitElement {
   // options for the intersection observer
   intersectionOptions = {
     root: null,
-    rootMargin: '0px 0px -80% 0px',
-    threshold: 0.25
+    rootMargin: '0px 0px -65% 0px',
+    threshold: 0
   }
 
   // the intersection observer
@@ -49,7 +49,6 @@ export class NewsItems extends LitElement {
       if (entry.isIntersecting) {
         const id = entry.target.getAttribute('data-id')
         this._activeItem = id
-        console.log(this._activeItem)
       }
     })
   }

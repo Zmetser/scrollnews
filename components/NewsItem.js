@@ -16,6 +16,14 @@ export class NewsItem extends LitElement {
     }
   }
 
+  // Keep the items always active. This is an experiment to see if we can simplify the open animation.
+  shouldUpdate(changedProperties) {
+    if (changedProperties.has('isActive')) {
+      return this.isActive
+    }
+    return true
+  }
+
   // observe the element when it is first updated
   firstUpdated() {
     this._observer.value.observe(this)
