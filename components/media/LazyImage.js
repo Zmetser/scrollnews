@@ -74,10 +74,13 @@ export class LazyImage extends loadingImagePlaceholder(LitElement) {
         margin: 0;
         overflow: hidden;
         justify-self: center;
+        position: relative;
       }
       svg {
         width: 100%;
         aspect-ratio: var(--media-ratio);
+        position: absolute;
+        z-index: 1;
       }
       img {
         width: 100%;

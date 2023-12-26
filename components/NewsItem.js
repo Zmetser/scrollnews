@@ -18,9 +18,11 @@ export class NewsItem extends LitElement {
           <h2 class="title">${unsafeHTML(this.item.title)}</h2>
         </header>
         <div class="details">
-          <!-- TODO: Add a read more permalink -->
-          <p class="lead">${unsafeHTML(this.item.lead)}</p>
-          <lazy-image src="${this.item.image}"></lazy-media>
+          <div class="expander">
+            <!-- TODO: Add a read more permalink -->
+            <p class="lead">${unsafeHTML(this.item.lead)}</p>
+            <lazy-image src="${this.item.image}"></lazy-media>
+          </div>
         </div>
         <!-- TODO: source should take me to the article, or the source home? -->
         <footer>
@@ -74,35 +76,22 @@ export class NewsItem extends LitElement {
         background-color: var(--newsitem-bg-color);
         color: var(--newsitem-color);
         padding: 16px;
-
-        display: grid;
-        grid-template-columns: 1fr;
-        /* grid-template-rows: fit-content(1em) 1fr 0; */
-        grid-template-rows: fit-content(1em) fit-content(1em) 1fr;
-        grid-column-gap: 0px;
-        grid-row-gap: 0px;
-        column-gap: 10px;
-
-        overflow: hidden;
-        transition: grid-template-rows var(--animation-duration) ease-out;
-
+        display: flex;
+        flex-direction: column;
         border-radius: 16px;
-
-        /* Open/close animation */
-        transition: max-height var(--animation-duration),
-          transform var(--animation-duration);
-        will-change: max-height, transform;
-        overflow: hidden;
       }
 
       .details {
-        display: grid;
         order: 3;
-        min-height: 0;
+        display: grid;
+        grid-template-rows: 0fr;
+        overflow: hidden;
+        transition: grid-template-rows var(--opening-duration);
       }
 
       .active .details {
         margin-top: 1.3em;
+        grid-template-rows: 1fr;
       }
 
       .header {
@@ -136,56 +125,48 @@ export class NewsItem extends LitElement {
         margin-right: 0.5em;
       }
 
-      .time {}
+      .time {
+      }
 
-        .time::before {
-          content: '•';
-          margin: 0 0.5em;
-        }
+      .time::before {
+        content: '•';
+        margin: 0 0.5em;
+      }
 
       .lead {
-        display: -webkit-box;
         line-height: 1.3;
         font-family: 'Roboto Condensed', sans-serif;
         font-weight: 400;
         margin: 0;
         order: 2;
 
-        max-height: 0;
-        opacity: 0;
-        overflow: hidden;
-        transition: max-height var(--animation-duration),
-          opacity var(--animation-duration);
-
+        /* display: -webkit-box;
         -webkit-line-clamp: var(--max-visible-lead-lines);
-        -webkit-box-orient: vertical;
+        -webkit-box-orient: vertical; */
       }
 
       lazy-image {
-        width: 0;
+        display: block;
+        width: 100%;
         aspect-ratio: var(--media-ratio);
-        overflow: hidden;
-        margin: 0;
+        margin: 0 0 1.3em 0;
         justify-self: center;
       }
 
-      .active lazy-image {
-        margin: 0 0 1.3em 0;
-        width: 100%;
+      .expander {
+        display: grid;
+        min-height: 0;
+        transition: visibility var(--opening-duration);
+        visibility: hidden;
+      }
+
+      .active .expander {
+        visibility: visible;
       }
 
       .newsitem.active {
-        grid-template-rows: fit-content(1em) fit-content(1em) 1fr;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transform: scale(1.02);
-      }
-
-      .newsitem.active .lead {
-        grid-column: 1;
-        opacity: 1;
-        overflow: hidden;
-        max-height: calc(var(--max-visible-lead-lines) * 1.3 * 1rem);
-        margin-bottom: 0.5em;
       }
     `
   }

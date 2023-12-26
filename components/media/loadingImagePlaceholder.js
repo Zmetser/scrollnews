@@ -1,4 +1,4 @@
-import { html, svg } from 'lit-element'
+import { html, svg, nothing } from 'lit-element'
 
 // this base class is used to display an animated svg while the image is loading
 export const loadingImagePlaceholder = function (SuperClass) {
@@ -60,7 +60,7 @@ export const loadingImagePlaceholder = function (SuperClass) {
   <animate xlink:href="#d" attributeName="x" from="-100%" to="100%" dur="1s" begin="0s" fill="freeze" repeatCount="indefinite"/>
   <animate xlink:href="#e" attributeName="x" from="0%" to="200%" dur="1s" begin="0s" fill="freeze" repeatCount="indefinite"/>
 </svg>`
-        : ''}`
+        : nothing}`
     }
   }
 }

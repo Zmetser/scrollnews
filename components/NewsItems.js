@@ -33,7 +33,7 @@ export class NewsItems extends LitElement {
   // options for the intersection observer
   intersectionOptions = {
     root: null,
-    rootMargin: '0px 0px -65% 0px',
+    rootMargin: '0px 0px -55% 0px',
     threshold: 0
   }
 
