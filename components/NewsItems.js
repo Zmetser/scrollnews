@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit'
 import { ContextProvider } from '@lit/context'
+import { repeat } from 'lit/directives/repeat.js'
 
 import { scrollObserverContext } from '../utils/contexts'
 
@@ -9,15 +10,13 @@ export class NewsItems extends LitElement {
   render() {
     return html`
       <ol>
-        <!-- TODO: load data from API, use context -->
-        ${this.items.map(
-          (item) =>
-            html`<news-item
-              data-id="${item.id}"
-              ?is-active=${this._activeItem === item.id}
-              .item=${item}
-            ></news-item>`
-        )}
+        ${repeat(this.items, (item) => item.id, (item) => {
+          return html`<news-item
+            data-id="${item.id}"
+            ?is-active=${this._activeItem === item.id}
+            .item=${item}
+          ></news-item>`
+        })}
       </ol>
     `
   }
