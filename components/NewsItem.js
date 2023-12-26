@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit'
 import { classMap } from 'lit/directives/class-map.js'
 import { ContextConsumer } from '@lit/context'
+import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 
 import { scrollObserverContext } from '../utils/contexts'
 import './media/LazyImage'
@@ -13,11 +14,11 @@ export class NewsItem extends LitElement {
         role="article"
       >
         <header class="header">
-          <h2 class="title">${this.item.title}</h2>
+          <h2 class="title">${unsafeHTML(this.item.title)}</h2>
         </header>
         <div class="details">
           <!-- TODO: Add a read more permalink -->
-          <p class="lead">${this.item.lead}</p>
+          <p class="lead">${unsafeHTML(this.item.lead)}</p>
           <!-- TODO: Add relative time somewhere -->
           <lazy-image src="${this.item.image}"></lazy-media>
         </div>
@@ -90,9 +91,9 @@ export class NewsItem extends LitElement {
         min-height: 0;
       }
 
-        .active .details {
-          margin-top: 1.3em;
-        }
+      .active .details {
+        margin-top: 1.3em;
+      }
 
       .header {
         order: 2;
