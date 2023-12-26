@@ -4,6 +4,7 @@ import { ContextConsumer } from '@lit/context'
 import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 
 import { scrollObserverContext } from '../utils/contexts'
+import { getRelativeTimeString } from '../utils/dateUtils'
 import './media/LazyImage'
 
 export class NewsItem extends LitElement {
@@ -19,11 +20,13 @@ export class NewsItem extends LitElement {
         <div class="details">
           <!-- TODO: Add a read more permalink -->
           <p class="lead">${unsafeHTML(this.item.lead)}</p>
-          <!-- TODO: Add relative time somewhere -->
           <lazy-image src="${this.item.image}"></lazy-media>
         </div>
         <!-- TODO: source should take me to the article, or the source home? -->
-        <footer class="source">${this.item.source}</footer>
+        <footer>
+          <span class="source">${this.item.source}</span>
+          <span class="time">${this.relativeTime(this.item)}</span>
+        </footer>
       </li>
     `
   }
@@ -56,6 +59,13 @@ export class NewsItem extends LitElement {
     // disconnect the observer when the component is disconnected
     this._observer.value.unobserve(this)
     super.disconnectedCallback()
+  }
+
+  relativeTime({ date, time }) {
+    return getRelativeTimeString(
+      new Date(date + 'T' + time),
+      navigator.language
+    )
   }
 
   static get styles() {
@@ -107,17 +117,17 @@ export class NewsItem extends LitElement {
         margin: 0;
       }
 
-      .source {
+      footer {
+        order: 1;
+        display: flex;
         font-size: 0.75rem;
         font-family: 'Roboto Condensed', sans-serif;
         line-height: 1.3;
-        order: 1;
-        grid-column: 1 / span 2;
-        display: flex;
+
         align-items: center;
       }
 
-      .source::before {
+      footer::before {
         content: '';
         width: 1em;
         height: 1em;
@@ -125,6 +135,13 @@ export class NewsItem extends LitElement {
         background-color: var(--topic-color, var(--topic-0));
         margin-right: 0.5em;
       }
+
+      .time {}
+
+        .time::before {
+          content: '•';
+          margin: 0 0.5em;
+        }
 
       .lead {
         display: -webkit-box;
@@ -155,12 +172,6 @@ export class NewsItem extends LitElement {
       .active lazy-image {
         margin: 0 0 1.3em 0;
         width: 100%;
-      }
-
-      .lead,
-      .source,
-      .header {
-        grid-column: 1 / span 2;
       }
 
       .newsitem.active {

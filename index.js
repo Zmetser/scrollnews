@@ -14,6 +14,7 @@ export class App extends LitElement {
       <!-- TODO: style the title -->
       <h1>Top stories</h1>
 
+      <!-- TODO: add unique color to topics, active should be underlined -->
       <div class="topics">
         ${repeat(
           this._topics,
