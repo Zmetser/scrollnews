@@ -5,23 +5,24 @@
   --animation-duration: 0.25s;
   --opening-duration: 0.35s;
 
-  /* Topic colors */
-  --topic-0: #005940;
-  --topic-1: #fc9d9a;
-  --topic-2: #fcffe4;
-  --topic-3: #8f0d45;
-  --topic-4: #fe4365;
-  --topic-5: #83a895;
-  --topic-6: #f9cdad;
-  --topic-7: #c8c8a9;
-  --topic-8: #83af9b;
-  --topic-9: #c7f464;
-  --topic-10: #ed95a4;
+  /* Category colors */
+  --category-color-unknown: #e3e3e3;
+  --category-color-auto: #fc9d9a;
+  --category-color-belfold: #fcffe4;
+  --category-color-bulvar: #8f0d45;
+  --category-color-gazdasag: #fe4365;
+  --category-color-informatika: #83a895;
+  --category-color-kultura: #f9cdad;
+  --category-color-kulfold: #c8c8a9;
+  --category-color-publicisztika: #83af9b;
+  --category-color-sport: #c7f464;
+  --category-color-eletmod: #ed95a4;
 }
 
 body {
-  margin: 10px;
+  margin: 0;
   background-color: var(--main-bg-color);
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 /* Colors */
@@ -31,8 +32,11 @@ body {
     --newsitem-bg-color: #1f1f1f;
     --newsitem-color: #e3e3e3;
 
-    --topic-button-bg-color: #292a2d;
-    --topic-button-color: #e3e3e3;
+    --header-color: #e2e2e2;
+    --header-bg-color: #202124;
+    --header-bottom-border-color: #3c4043;
+    --category-button-bg-color: var(--header-bg-color);
+    --category-button-color: #c1c1c1;
   }
 }
 
@@ -42,35 +46,10 @@ body {
     --newsitem-bg-color: #fff;
     --newsitem-color: #1f1f1f;
 
-    --topic-button-bg-color: #f7f8fc;
-    --topic-button-color: #1f1f1f;
+    --header-color: #272727;
+    --header-bg-color: #fff;
+    --header-bottom-border-color: #dbdce0;
+    --category-button-bg-color: var(--header-bg-color);
+    --category-button-color: #656565;
   }
-}
-
-.root-margin {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  color: #fff;
-  font-size: 4rem;
-  justify-content: flex-start;
-  left: 0;
-  padding-left: 32px;
-  pointer-events: none;
-  position: fixed;
-  right: 0;
-  transition: height 1s ease;
-  z-index: 0;
-}
-
-.root-margin-top {
-  background-color: #cfca8a;
-  height: var(--root-margin-top, 0);
-  top: 0;
-}
-
-.root-margin-bottom {
-  background-color: #aba456;
-  bottom: 0;
-  height: var(--root-margin-bottom, 0);
 }

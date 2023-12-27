@@ -1,4 +1,5 @@
 import { Cache } from './cache'
+import { gatherCategoriesFrom, CATEGORIES } from '../utils/categoryUtils'
 
 const REMOTE_URL =
   'https://stories-test-78664cfb8416.herokuapp.com/?randomize-media=true'
@@ -14,29 +15,16 @@ export const fetchNews = async (signal) => {
     // Save the 10 latest items to cache
     return items.then((items) => {
       Cache.saveItemsToCache(items.slice(0, 10))
-      const topics = gatherTopics(items)
-      Cache.saveTopicsToCache(topics)
-      return { items, topics }
+      return { items, categories: gatherCategoriesFrom(items) }
     })
   } else {
     // Try to handle the error gracefully by returning cached items
     const itemsFromCache = Cache.getItemsFromCache()
     if (itemsFromCache.length > 0) {
       console.error(response.text())
-      return { items: itemsFromCache, topics: Cache.getTopicsFromCache() }
+      return { items: itemsFromCache, categories: CATEGORIES }
     } else {
       throw response.text()
     }
   }
-}
-
-function gatherTopics(items) {
-  return Array.from(
-    items.reduce((topics, item) => {
-      if (item.topic) {
-        topics.add(item.topic)
-      }
-      return topics
-    }, new Set())
-  ).sort((lhs, rhs) => lhs.localeCompare(rhs))
 }

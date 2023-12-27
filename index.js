@@ -1,39 +1,32 @@
 import { LitElement, html, css, nothing } from 'lit'
 import { Task, TaskStatus } from '@lit/task'
-import { repeat } from 'lit/directives/repeat.js'
 
 import './components/NewsItems'
 import './components/NewsItemsPlaceholder'
+import './components/Categories'
 
 import { fetchNews } from './utils/dataFetcher'
 import { Cache } from './utils/cache'
+import { filterByCategory, CATEGORIES } from './utils/categoryUtils'
 
 export class App extends LitElement {
   render() {
     return html`
-      <!-- TODO: style the title -->
-      <h1>Top stories</h1>
-
-      <!-- TODO: add unique color to topics, active should be underlined -->
-      <div class="topics">
-        ${repeat(
-          this._topics,
-          (topic) => topic,
-          (topic) => {
-            return html`<button
-              class="topic-button ${topic === this._selectedTopic ? 'selected' : ''}"
-              @click=${{ handleEvent: () => this.onTopicSelect(topic) }}
-            >
-              ${topic}
-            </button>`
-          }
-        )}
+      <div class="header">
+        <h1><strong>Stenza</strong> news aggregator</h1>
+        <news-categories
+          .selectedCategory=${this._selectedCategory}
+          .availableCategories=${this._availableCategories}
+          @categorySelect=${this.onCategorySelect}
+        ></news-categories>
       </div>
 
       <!-- Show placeholders when cache is cold and data is loading -->
       ${this._items.length === 0 && this._dataTask.status === TaskStatus.PENDING
         ? html`<news-items-placeholder></news-items-placeholder>`
-        : html`<news-items .items=${this.filterByTopic(this._items, this._selectedTopic)}></news-items>`}
+        : html`<news-items
+            .items=${filterByCategory(this._items, this._selectedCategory)}
+          ></news-items>`}
 
       <!-- Show error message when couldn't refresh -->
       ${this._dataTask.status === TaskStatus.ERROR
@@ -43,14 +36,15 @@ export class App extends LitElement {
   }
 
   _itemsFromCache = Cache.getItemsFromCache()
-  _topicsFromCache = Cache.getTopicsFromCache()
 
   constructor() {
     super()
     // Show items from cache until we get new items
     this._items = this._itemsFromCache
-    this._topics = this._topicsFromCache
-    this._selectedTopic = null
+    // By default populate the categories with all the categories
+    this._availableCategories = CATEGORIES
+    // By default no category is selected
+    this._selectedCategory = null
   }
 
   connectedCallback() {
@@ -64,62 +58,62 @@ export class App extends LitElement {
       // Overwrite the items with the fresh ones from the server when the data task is complete
       const result = await fetchNews(signal)
       this._items = result.items
-      this._topics = result.topics
-      return this._items
+      this._availableCategories = result.categories
+      return result
     }
   })
 
-  onTopicSelect(topic) {
-    // reset the selected topic if it's already selected
-    if (topic === this._selectedTopic) {
-      this._selectedTopic = null
+  onCategorySelect(event) {
+    const category = event.detail.category
+    // reset the selected category if it's already selected
+    if (category === this._selectedCategory) {
+      this._selectedCategory = null
       return
     }
-    this._selectedTopic = topic
-  }
-
-  filterByTopic(items, topic) {
-    if (!topic) {
-      return items
-    }
-    return items.filter((item) => item.topic === topic)
+    this._selectedCategory = category
   }
 
   static properties = {
-    // Hold the items in state.
+    // All the items
     _items: { state: true },
-    _topics: { state: true },
-    _selectedTopic: { state: true }
+    // Keeps track of available categories (only categories with items are in here)
+    _availableCategories: { state: true },
+    // Keeps track of the selected category
+    _selectedCategory: { state: true }
   }
 
-  static get styles() {
-    return css`
+  static styles = [
+    css`
+      news-items-placeholder,
+      news-items {
+        margin: 0 10px;
+        display: block;
+      }
+
       .error-message {
         text-align: center;
         color: darkred;
       }
 
-      .topics {
-        white-space: nowrap;
-        overflow-x: auto;
+      .header {
+        border-bottom: 1px solid var(--header-bottom-border-color);
+        padding: 10px 10px 0;
+        margin-bottom: 35px;
+        background: var(--header-bg-color);
       }
 
-      .topic-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-        padding: 0.5rem;
-        margin: 0.5rem;
-        background-color: var(--topic-button-bg-color);
-        color: var(--topic-button-color);
+      h1 {
+        font-size: 22px;
+        margin-top: 10px;
+        margin-left: 16px;
+        color: var(--header-color);
+        font-family: 'Roboto Condensed', sans-serif;
       }
-
-      .topic-button.selected {
-        background-color: var(--topic-3);
+      h1 strong {
+        font-family: Roboto, sans-serif;
       }
     `
-  }
+  ]
 }
 
 window.customElements.define('scrollnews-app', App)
