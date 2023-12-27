@@ -1,5 +1,3 @@
-import { unsafeCSS } from 'lit'
-
 // we could gather the categories from the items, but then we would have to dynamically
 // generate the classes for the categories, which would make me inject css after data fetch
 export const CATEGORIES = [

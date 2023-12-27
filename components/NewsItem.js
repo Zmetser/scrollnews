@@ -6,7 +6,7 @@ import { styleMap } from 'lit/directives/style-map.js'
 
 import { scrollObserverContext } from '../utils/contexts'
 import { getRelativeTimeString } from '../utils/dateUtils'
-import { categoryStyleMapFor } from '../models/Category'
+import { categoryStyleMapFor } from '../utils/categoryUtils'
 import './media/LazyImage'
 
 export class NewsItem extends LitElement {

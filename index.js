@@ -9,7 +9,11 @@ import './components/NewsItemsPlaceholder'
 
 import { fetchNews } from './utils/dataFetcher'
 import { Cache } from './utils/cache'
-import { filterByCategory, CATEGORIES, categoryStyleMapFor } from './models/Category'
+import {
+  filterByCategory,
+  CATEGORIES,
+  categoryStyleMapFor
+} from './utils/categoryUtils'
 
 export class App extends LitElement {
   render() {
