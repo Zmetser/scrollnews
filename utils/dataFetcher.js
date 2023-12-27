@@ -1,5 +1,4 @@
 import { Cache } from './cache'
-import { gatherCategoriesFrom, CATEGORIES } from '../models/Category'
 import { gatherCategoriesFrom, CATEGORIES } from '../utils/categoryUtils'
 
 const REMOTE_URL =
