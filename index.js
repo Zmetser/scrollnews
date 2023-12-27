@@ -18,27 +18,26 @@ import {
 export class App extends LitElement {
   render() {
     return html`
-      <!-- TODO: style the title -->
-      <h1>Top stories</h1>
-
-      <!-- TODO: add unique color to categories, active should be underlined -->
-      <!-- TODO: empty categories should gray out -->
-      <div class="categories">
-        ${repeat(
-          CATEGORIES,
-          (category) => category,
-          (category) => {
-            return html`<button
-              class="category-button ${classMap({
-                selected: category === this._selectedCategory
-              })}"
-              style="${styleMap(categoryStyleMapFor(category))}"
-              @click=${{ handleEvent: () => this.onCategorySelect(category) }}
-            >
-              ${category}
-            </button>`
-          }
-        )}
+      <div class="header">
+        <h1><strong>Stenza</strong> news aggregator</h1>
+        <!-- TODO: empty categories should gray out -->
+        <div class="categories">
+          ${repeat(
+            CATEGORIES,
+            (category) => category,
+            (category) => {
+              return html`<a
+                class="category-button ${classMap({
+                  selected: category === this._selectedCategory
+                })}"
+                style="${styleMap(categoryStyleMapFor(category))}"
+                @click=${{ handleEvent: () => this.onCategorySelect(category) }}
+              >
+                ${category}
+              </a>`
+            }
+          )}
+        </div>
       </div>
 
       <!-- Show placeholders when cache is cold and data is loading -->
@@ -103,29 +102,69 @@ export class App extends LitElement {
 
   static styles = [
     css`
+      news-items-placeholder,
+      news-items {
+        margin: 0 10px;
+        display: block;
+      }
+
       .error-message {
         text-align: center;
         color: darkred;
       }
 
+      .header {
+        border-bottom: 1px solid var(--header-bottom-border-color);
+        padding: 10px 10px 0;
+        margin-bottom: 35px;
+        background: var(--header-bg-color);
+      }
+
+      h1 {
+        font-size: 22px;
+        margin-top: 10px;
+        margin-left: 16px;
+        color: var(--header-color);
+        font-family: 'Roboto Condensed', sans-serif;
+      }
+      h1 strong {
+        font-family: Roboto, sans-serif;
+      }
+
       .categories {
+        display: flex;
+        flex-direction: row;
         white-space: nowrap;
         overflow-x: auto;
+        /* Hide scrollbar for IE, Edge and Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .categories::-webkit-scrollbar {
+        display: none;
       }
 
       .category-button {
-        background: none;
-        border: none;
+        margin: 6px 16px;
         cursor: pointer;
-        font-size: 1rem;
-        padding: 0.5rem;
-        margin: 0.5rem;
-        background-color: var(--category-button-bg-color);
         color: var(--category-button-color);
       }
 
-      .category-button.selected {
+      .category-button.selected:after {
         background-color: var(--category-color);
+      }
+
+      .category-button:after {
+        position: relative;
+        content: '';
+        display: block;
+        height: 5px;
+        width: 100%;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        top: 6px;
       }
     `
   ]

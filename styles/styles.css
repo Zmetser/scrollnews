@@ -20,7 +20,7 @@
 }
 
 body {
-  margin: 10px;
+  margin: 0;
   background-color: var(--main-bg-color);
   font-family: 'Roboto Condensed', sans-serif;
 }
@@ -32,8 +32,11 @@ body {
     --newsitem-bg-color: #1f1f1f;
     --newsitem-color: #e3e3e3;
 
-    --category-button-bg-color: #292a2d;
-    --category-button-color: #e3e3e3;
+    --header-color: #e2e2e2;
+    --header-bg-color: #202124;
+    --header-bottom-border-color: #3c4043;
+    --category-button-bg-color: var(--header-bg-color);
+    --category-button-color: #c1c1c1;
   }
 }
 
@@ -43,7 +46,10 @@ body {
     --newsitem-bg-color: #fff;
     --newsitem-color: #1f1f1f;
 
-    --category-button-bg-color: #f7f8fc;
-    --category-button-color: #1f1f1f;
+    --header-color: #272727;
+    --header-bg-color: #fff;
+    --header-bottom-border-color: #dbdce0;
+    --category-button-bg-color: var(--header-bg-color);
+    --category-button-color: #656565;
   }
 }
