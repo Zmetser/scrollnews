@@ -1,17 +1,22 @@
 import { LitElement, html, css } from 'lit'
-import { classMap } from 'lit/directives/class-map.js'
 import { ContextConsumer } from '@lit/context'
+import { classMap } from 'lit/directives/class-map.js'
 import { unsafeHTML } from 'lit/directives/unsafe-html.js'
+import { styleMap } from 'lit/directives/style-map.js'
 
 import { scrollObserverContext } from '../utils/contexts'
 import { getRelativeTimeString } from '../utils/dateUtils'
+import { categoryStyleMapFor } from '../models/Category'
 import './media/LazyImage'
 
 export class NewsItem extends LitElement {
   render() {
     return html`
       <li
-        class="newsitem ${classMap({ active: this.isActive })}"
+        class="newsitem ${classMap({
+          active: this.isActive
+        })}"
+        style="${styleMap(categoryStyleMapFor(this.item.topic))}"
         role="article"
       >
         <header class="header">
@@ -64,14 +69,17 @@ export class NewsItem extends LitElement {
   }
 
   relativeTime({ date, time }) {
+    if (!date || !time) {
+      return ''
+    }
     return getRelativeTimeString(
       new Date(date + 'T' + time),
       navigator.language
     )
   }
 
-  static get styles() {
-    return css`
+  static styles = [
+    css`
       .newsitem {
         background-color: var(--newsitem-bg-color);
         color: var(--newsitem-color);
@@ -169,7 +177,7 @@ export class NewsItem extends LitElement {
         transform: scale(1.02);
       }
     `
-  }
+  ]
 }
 
 window.customElements.define('news-item', NewsItem)
