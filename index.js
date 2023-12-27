@@ -1,43 +1,24 @@
 import { LitElement, html, css, nothing } from 'lit'
 import { Task, TaskStatus } from '@lit/task'
-import { repeat } from 'lit/directives/repeat.js'
-import { classMap } from 'lit/directives/class-map.js'
-import { styleMap } from 'lit/directives/style-map.js'
 
 import './components/NewsItems'
 import './components/NewsItemsPlaceholder'
+import './components/Categories'
 
 import { fetchNews } from './utils/dataFetcher'
 import { Cache } from './utils/cache'
-import {
-  filterByCategory,
-  CATEGORIES,
-  categoryStyleMapFor
-} from './utils/categoryUtils'
+import { filterByCategory, CATEGORIES } from './utils/categoryUtils'
 
 export class App extends LitElement {
   render() {
     return html`
       <div class="header">
         <h1><strong>Stenza</strong> news aggregator</h1>
-        <!-- TODO: empty categories should gray out -->
-        <div class="categories">
-          ${repeat(
-            CATEGORIES,
-            (category) => category,
-            (category) => {
-              return html`<a
-                class="category-button ${classMap({
-                  selected: category === this._selectedCategory
-                })}"
-                style="${styleMap(categoryStyleMapFor(category))}"
-                @click=${{ handleEvent: () => this.onCategorySelect(category) }}
-              >
-                ${category}
-              </a>`
-            }
-          )}
-        </div>
+        <news-categories
+          .selectedCategory=${this._selectedCategory}
+          .availableCategories=${this._availableCategories}
+          @categorySelect=${this.onCategorySelect}
+        ></news-categories>
       </div>
 
       <!-- Show placeholders when cache is cold and data is loading -->
@@ -61,7 +42,7 @@ export class App extends LitElement {
     // Show items from cache until we get new items
     this._items = this._itemsFromCache
     // By default populate the categories with all the categories
-    this._categories = CATEGORIES
+    this._availableCategories = CATEGORIES
     // By default no category is selected
     this._selectedCategory = null
   }
@@ -77,12 +58,13 @@ export class App extends LitElement {
       // Overwrite the items with the fresh ones from the server when the data task is complete
       const result = await fetchNews(signal)
       this._items = result.items
-      this._categories = result.categories
+      this._availableCategories = result.categories
       return result
     }
   })
 
-  onCategorySelect(category) {
+  onCategorySelect(event) {
+    const category = event.detail.category
     // reset the selected category if it's already selected
     if (category === this._selectedCategory) {
       this._selectedCategory = null
@@ -95,7 +77,7 @@ export class App extends LitElement {
     // All the items
     _items: { state: true },
     // Keeps track of available categories (only categories with items are in here)
-    _categories: { state: true },
+    _availableCategories: { state: true },
     // Keeps track of the selected category
     _selectedCategory: { state: true }
   }
@@ -129,42 +111,6 @@ export class App extends LitElement {
       }
       h1 strong {
         font-family: Roboto, sans-serif;
-      }
-
-      .categories {
-        display: flex;
-        flex-direction: row;
-        white-space: nowrap;
-        overflow-x: auto;
-        /* Hide scrollbar for IE, Edge and Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-      }
-
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .categories::-webkit-scrollbar {
-        display: none;
-      }
-
-      .category-button {
-        margin: 6px 16px;
-        cursor: pointer;
-        color: var(--category-button-color);
-      }
-
-      .category-button.selected:after {
-        background-color: var(--category-color);
-      }
-
-      .category-button:after {
-        position: relative;
-        content: '';
-        display: block;
-        height: 5px;
-        width: 100%;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        top: 6px;
       }
     `
   ]

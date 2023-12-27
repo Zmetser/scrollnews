@@ -25,7 +25,7 @@ export class NewsItems extends LitElement {
   _provider = new ContextProvider(this, { context: scrollObserverContext })
 
   static properties = {
-    items: { type: Object },
+    items: { type: Array },
     // track the active item
     _activeItem: { state: true }
   }
