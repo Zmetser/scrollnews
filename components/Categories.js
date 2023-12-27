@@ -75,6 +75,7 @@ export class Categories extends LitElement {
 
     .category-button.selected:after {
       background-color: var(--category-color);
+      top: 6px;
     }
 
     .category-button:after {
@@ -85,7 +86,8 @@ export class Categories extends LitElement {
       width: 100%;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
-      top: 6px;
+      top: 12px;
+      transition: top var(--animation-duration) linear;
     }
   `
 }

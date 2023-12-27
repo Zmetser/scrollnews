@@ -1,5 +1,6 @@
 import { Cache } from './cache'
 import { gatherCategoriesFrom, CATEGORIES } from '../models/Category'
+import { gatherCategoriesFrom, CATEGORIES } from '../utils/categoryUtils'
 
 const REMOTE_URL =
   'https://stories-test-78664cfb8416.herokuapp.com/?randomize-media=true'
