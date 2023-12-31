@@ -27,6 +27,7 @@ export class App extends LitElement {
         : html`<news-items
             .items=${filterByCategory(this._items, this._selectedCategory)}
             .previusUpdate=${this._previusUpdate}
+            .selectedCategory=${this._selectedCategory}
           ></news-items>`}
 
       <!-- Show error message when couldn't refresh -->

@@ -41,6 +41,7 @@ export class NewsItems extends LitElement {
   static properties = {
     items: { type: Array },
     previusUpdate: { type: String },
+    selectedCategory: { type: String, attribute: false },
     // track the active item
     _activeItem: { state: true },
     _renderSeparatorBefore: { state: true }
@@ -59,6 +60,14 @@ export class NewsItems extends LitElement {
   willUpdate(changedProperties) {
     // find the first item that is older than the previous update
     this._renderSeparatorBefore = this.items.find(item => toTimestamp(item.date, item.time) <= this.previusUpdate)
+
+    if (changedProperties.has('selectedCategory')) {
+      this._activeItem = this.items[0].id
+    }
+  }
+
+  firstUpdated() {
+    this._activeItem = this.items[0].id
   }
 
   connectedCallback() {
