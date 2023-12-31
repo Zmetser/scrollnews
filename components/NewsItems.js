@@ -22,7 +22,7 @@ export class NewsItems extends LitElement {
             ></news-item>`
 
             // render a separator before the first item that is older than the previous update
-            return item.id === this._renderSeparatorBefore.id && index > 0
+            return this._renderSeparatorBefore && item.id === this._renderSeparatorBefore.id && index > 0
               ? html`${this.separator()} ${newsItemHTML}`
               : newsItemHTML
           }
