@@ -292,7 +292,7 @@ const _t=1,$t=2,At=t=>(...e)=>({_$litDirective$:t,values:e});let wt=class{constr
               data-id="${t.id}"
               ?is-active=${this._activeItem===t.id}
               .item=${t}
-            ></news-item>`;return t.id===this._renderSeparatorBefore.id&&e>0?V`${this.separator()} ${s}`:s}))}
+            ></news-item>`;return this._renderSeparatorBefore&&t.id===this._renderSeparatorBefore.id&&e>0?V`${this.separator()} ${s}`:s}))}
       </ol>
     `}separator(){return V`<li class="separator"><span>régebbi hírek</span></li>`}_provider=new yt(this,{context:Pt});static properties={items:{type:Array},previusUpdate:{type:String},selectedCategory:{type:String,attribute:!1},_activeItem:{state:!0},_renderSeparatorBefore:{state:!0}};intersectionOptions={root:null,rootMargin:"0px 0px -55% 0px",threshold:0};observer=null;willUpdate(t){this._renderSeparatorBefore=this.items.find((t=>Rt(t.date,t.time)<=this.previusUpdate)),t.has("selectedCategory")&&(this._activeItem=this.items[0].id)}firstUpdated(){this._activeItem=this.items[0].id}connectedCallback(){super.connectedCallback(),this.observer=new IntersectionObserver(this.onIntersect.bind(this),this.intersectionOptions),this._provider.setValue(this.observer)}disconnectedCallback(){this.observer.disconnect(),super.disconnectedCallback()}onIntersect(t,e){t.forEach((t=>{if(t.isIntersecting){const e=t.target.getAttribute("data-id");this._activeItem=e}}))}static get styles(){return o`
       ol {
