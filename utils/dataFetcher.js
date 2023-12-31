@@ -1,5 +1,6 @@
 import { Cache } from './cache'
 import { gatherCategoriesFrom, CATEGORIES } from '../utils/categoryUtils'
+import { toTimestamp } from '../utils/dateUtils'
 
 const REMOTE_URL =
   'https://stories-test-78664cfb8416.herokuapp.com/?randomize-media=true'
@@ -15,6 +16,12 @@ export const fetchNews = async (signal) => {
     // Save the 10 latest items to cache
     return items.then((items) => {
       Cache.saveItemsToCache(items.slice(0, 10))
+      if (items[0]) {
+        Cache.saveState({
+          ...Cache.getState(),
+          latestItemTimestamp: toTimestamp(items[0].date, items[0].time)
+        })
+      }
       return { items, categories: gatherCategoriesFrom(items) }
     })
   } else {

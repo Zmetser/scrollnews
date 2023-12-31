@@ -33,3 +33,7 @@ export function getRelativeTimeString(date, lang) {
   const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' })
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex])
 }
+
+export function toTimestamp(date, time) {
+  return new Date(date + 'T' + time).getTime()
+}

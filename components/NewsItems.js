@@ -3,6 +3,7 @@ import { ContextProvider } from '@lit/context'
 import { repeat } from 'lit/directives/repeat.js'
 
 import { scrollObserverContext } from '../utils/contexts'
+import { toTimestamp } from '../utils/dateUtils'
 
 import './NewsItem'
 
@@ -10,15 +11,28 @@ export class NewsItems extends LitElement {
   render() {
     return html`
       <ol>
-        ${repeat(this.items, (item) => item.id, (item) => {
-          return html`<news-item
-            data-id="${item.id}"
-            ?is-active=${this._activeItem === item.id}
-            .item=${item}
-          ></news-item>`
-        })}
+        ${repeat(
+          this.items,
+          (item) => item.id,
+          (item, index) => {
+            const newsItemHTML = html`<news-item
+              data-id="${item.id}"
+              ?is-active=${this._activeItem === item.id}
+              .item=${item}
+            ></news-item>`
+
+            // render a separator before the first item that is older than the previous update
+            return item.id === this._renderSeparatorBefore.id && index > 0
+              ? html`${this.separator()} ${newsItemHTML}`
+              : newsItemHTML
+          }
+        )}
       </ol>
     `
+  }
+
+  separator() {
+    return html`<li class="separator"><span>régebbi hírek</span></li>`
   }
 
   // create a new context provider for the intersection observer
@@ -26,8 +40,10 @@ export class NewsItems extends LitElement {
 
   static properties = {
     items: { type: Array },
+    previusUpdate: { type: String },
     // track the active item
-    _activeItem: { state: true }
+    _activeItem: { state: true },
+    _renderSeparatorBefore: { state: true }
   }
 
   // options for the intersection observer
@@ -39,6 +55,11 @@ export class NewsItems extends LitElement {
 
   // the intersection observer
   observer = null
+
+  willUpdate(changedProperties) {
+    // find the first item that is older than the previous update
+    this._renderSeparatorBefore = this.items.find(item => toTimestamp(item.date, item.time) <= this.previusUpdate)
+  }
 
   connectedCallback() {
     super.connectedCallback()
@@ -79,6 +100,28 @@ export class NewsItems extends LitElement {
         display: flex;
         flex-direction: column;
         gap: 1em;
+      }
+
+      .separator {
+        text-align: center;
+        margin: 10px 0;
+        position: relative;
+      }
+      .separator::before {
+        content: '';
+        height: 1px;
+        display: block;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        background-color: var(--header-color);
+      }
+
+      .separator span {
+        background-color: var(--main-bg-color);
+        color: var(--header-color);
+        position: relative;
+        padding: 0 10px;
       }
 
       @media only screen and (min-width: 768px) {

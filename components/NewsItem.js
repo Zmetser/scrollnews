@@ -20,7 +20,9 @@ export class NewsItem extends LitElement {
         role="article"
       >
         <header class="header">
-          <h2 class="title">${unsafeHTML(this.item.title)}</h2>
+          <h2 class="title">
+            <a href="${this._permalink}" target="_blank">${unsafeHTML(this.item.title)}</a>
+          </h2>
         </header>
         <div class="details">
           <div class="expander">
@@ -34,12 +36,17 @@ export class NewsItem extends LitElement {
           <span class="source">${this.item.source}</span>
           <span class="time">${this.relativeTime(this.item)}</span>
         </footer>
+        <a href="${this._permalink}" target="_blank" class="permalink" aria-hidden="true" tabindex="-1"></a>
       </li>
     `
   }
 
   // create a new context consumer for the intersection observer
   _observer = new ContextConsumer(this, { context: scrollObserverContext })
+  // url to the article
+  _permalink = ''
+  // url to the publisher's main page
+  _sourceURL = ''
 
   static properties = {
     item: { type: Object },
@@ -47,6 +54,11 @@ export class NewsItem extends LitElement {
       type: Boolean,
       attribute: 'is-active'
     }
+  }
+
+  willUpdate(changedProperties) {
+    const url = new URL(this.item.url)
+    this._permalink = url.href
   }
 
   // Keep the items always active. This is an experiment to see if we can simplify the open animation.
@@ -87,6 +99,22 @@ export class NewsItem extends LitElement {
         display: flex;
         flex-direction: column;
         border-radius: 16px;
+        cursor: pointer;
+        position: relative;
+      }
+      .newsitem:hover .title a {
+        text-decoration: underline;
+      }
+
+      /* Making the whole item tappable */
+      .permalink {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
       }
 
       .details {
@@ -114,12 +142,21 @@ export class NewsItem extends LitElement {
         margin: 0;
       }
 
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      a:visited {
+        color: color-mix(in srgb, var(--newsitem-color) 75%, white);
+      }
+
       footer {
         order: 1;
         display: flex;
         font-size: 0.75rem;
         font-family: 'Roboto Condensed', sans-serif;
         line-height: 1.3;
+        margin-bottom: 10px;
 
         align-items: center;
       }
@@ -129,7 +166,8 @@ export class NewsItem extends LitElement {
         width: 1em;
         height: 1em;
         display: block;
-        background-color: var(--topic-color, var(--topic-0));
+        /* background-color: var(--category-color); */
+        background-color: var(--newsitem-color);
         margin-right: 0.5em;
       }
 

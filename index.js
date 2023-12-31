@@ -26,6 +26,7 @@ export class App extends LitElement {
         ? html`<news-items-placeholder></news-items-placeholder>`
         : html`<news-items
             .items=${filterByCategory(this._items, this._selectedCategory)}
+            .previusUpdate=${this._previusUpdate}
           ></news-items>`}
 
       <!-- Show error message when couldn't refresh -->
@@ -36,6 +37,7 @@ export class App extends LitElement {
   }
 
   _itemsFromCache = Cache.getItemsFromCache()
+  _previusUpdate = Cache.getState().latestItemTimestamp
 
   constructor() {
     super()
