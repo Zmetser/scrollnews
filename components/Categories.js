@@ -4,13 +4,13 @@ import { repeat } from 'lit/directives/repeat.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { styleMap } from 'lit/directives/style-map.js'
 
-import { CATEGORIES, categoryStyleMapFor } from '../utils/categoryUtils'
+import { categoryStyleMapFor } from '../utils/categoryUtils'
 
 export class Categories extends LitElement {
   render() {
     return html`
       ${repeat(
-        CATEGORIES,
+        this.availableCategories,
         (category) => category,
         (category) => {
           return html`<a
@@ -18,7 +18,6 @@ export class Categories extends LitElement {
               selected: category === this.selectedCategory
             })}"
             style="${styleMap(categoryStyleMapFor(category))}"
-            aria-disabled=${!this.availableCategories.includes(category)}
             @click=${{ handleEvent: () => this.onCategorySelect(category) }}
           >
             ${category}
