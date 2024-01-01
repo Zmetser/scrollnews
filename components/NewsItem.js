@@ -21,7 +21,9 @@ export class NewsItem extends LitElement {
       >
         <header class="header">
           <h2 class="title">
-            <a href="${this._permalink}" target="_blank">${unsafeHTML(this.item.title)}</a>
+            <a href="${this._permalink}" target="_blank">${unsafeHTML(
+      this.item.title
+    )}</a>
           </h2>
         </header>
         <div class="details">
@@ -36,7 +38,9 @@ export class NewsItem extends LitElement {
           <span class="source">${this.item.source}</span>
           <span class="time">${this.relativeTime(this.item)}</span>
         </footer>
-        <a href="${this._permalink}" target="_blank" class="permalink" aria-hidden="true" tabindex="-1"></a>
+        <a href="${
+          this._permalink
+        }" target="_blank" class="permalink" aria-hidden="true" tabindex="-1"></a>
       </li>
     `
   }
@@ -98,9 +102,9 @@ export class NewsItem extends LitElement {
         padding: 16px;
         display: flex;
         flex-direction: column;
-        border-radius: 16px;
         cursor: pointer;
         position: relative;
+        border-left: 3px solid var(--category-color);
       }
       .newsitem:hover .title a {
         text-decoration: underline;

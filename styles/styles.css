@@ -7,13 +7,13 @@
 
   /* Category colors */
   --category-color-unknown: #e3e3e3;
-  --category-color-auto: #fc9d9a;
-  --category-color-belfold: #fcffe4;
-  --category-color-bulvar: #8f0d45;
-  --category-color-gazdasag: #fe4365;
-  --category-color-informatika: #83a895;
-  --category-color-kultura: #f9cdad;
-  --category-color-kulfold: #c8c8a9;
+  --category-color-auto: #f1edd0;
+  --category-color-belfold: #cde9ca;
+  --category-color-bulvar: #55453d;
+  --category-color-gazdasag: #f38a8a;
+  --category-color-informatika: #aeddf9;
+  --category-color-kultura: #1c526a;
+  --category-color-kulfold: #ec772a;
   --category-color-publicisztika: #83af9b;
   --category-color-sport: #c7f464;
   --category-color-eletmod: #ed95a4;
