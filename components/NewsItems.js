@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit'
 import { ContextProvider } from '@lit/context'
+import { animate, flyLeft, flyRight } from '@lit-labs/motion'
 import { repeat } from 'lit/directives/repeat.js'
 
 import { scrollObserverContext } from '../utils/contexts'
@@ -19,10 +20,23 @@ export class NewsItems extends LitElement {
               data-id="${item.id}"
               ?is-active=${this._activeItem === item.id}
               .item=${item}
+              ${animate({
+                keyframeOptions: {
+                  duration: 250,
+                  fill: 'both',
+                  easing: 'ease-in-out'
+                },
+                in: flyLeft,
+                out: flyRight,
+                stabilizeOut: true,
+                skipInitial: true
+              })}
             ></news-item>`
 
             // render a separator before the first item that is older than the previous update
-            return this._renderSeparatorBefore && item.id === this._renderSeparatorBefore.id && index > 0
+            return this._renderSeparatorBefore &&
+              item.id === this._renderSeparatorBefore.id &&
+              index > 0
               ? html`${this.separator()} ${newsItemHTML}`
               : newsItemHTML
           }
@@ -59,7 +73,9 @@ export class NewsItems extends LitElement {
 
   willUpdate(changedProperties) {
     // find the first item that is older than the previous update
-    this._renderSeparatorBefore = this.items.find(item => toTimestamp(item.date, item.time) <= this.previusUpdate)
+    this._renderSeparatorBefore = this.items.find(
+      (item) => toTimestamp(item.date, item.time) <= this.previusUpdate
+    )
 
     if (changedProperties.has('selectedCategory')) {
       this._activeItem = this.items[0].id
