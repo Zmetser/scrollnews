@@ -5,7 +5,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 import { styleMap } from 'lit/directives/style-map.js'
 
 import { scrollObserverContext } from '../utils/contexts'
-import { getRelativeTimeString } from '../utils/dateUtils'
+import { getAbsoluteTimeString } from '../utils/dateUtils'
 import { categoryStyleMapFor } from '../utils/categoryUtils'
 import './media/LazyImage'
 
@@ -28,15 +28,13 @@ export class NewsItem extends LitElement {
         </header>
         <div class="details">
           <div class="expander">
-            <!-- TODO: Add a read more permalink -->
             <p class="lead">${unsafeHTML(this.item.lead)}</p>
-            <lazy-image src="${this.item.image}"></lazy-media>
+            <lazy-image src="${this.item.image}"></lazy-image>
           </div>
         </div>
-        <!-- TODO: source should take me to the article, or the source home? -->
         <footer>
           <span class="source">${this.item.source}</span>
-          <span class="time">${this.relativeTime(this.item)}</span>
+          <span class="time">${this.absoluteTime(this.item)}</span>
         </footer>
         <a href="${
           this._permalink
@@ -84,11 +82,11 @@ export class NewsItem extends LitElement {
     super.disconnectedCallback()
   }
 
-  relativeTime({ date, time }) {
+  absoluteTime({ date, time }) {
     if (!date || !time) {
       return ''
     }
-    return getRelativeTimeString(
+    return getAbsoluteTimeString(
       new Date(date + 'T' + time),
       navigator.language
     )
