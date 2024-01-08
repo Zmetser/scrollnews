@@ -27,10 +27,8 @@ export class NewsItem extends LitElement {
           </h2>
         </header>
         <div class="details">
-          <div class="expander">
-            <p class="lead">${unsafeHTML(this.item.lead)}</p>
-            <lazy-image src="${this.item.image}"></lazy-image>
-          </div>
+          <p class="lead">${unsafeHTML(this.item.lead)}</p>
+          <lazy-image src="${this.item.image}"></lazy-media>
         </div>
         <footer>
           <span class="source">${this.item.source}</span>
@@ -95,9 +93,11 @@ export class NewsItem extends LitElement {
   static styles = [
     css`
       .newsitem {
+        --bubble-padding: 16px;
+
         background-color: var(--newsitem-bg-color);
         color: var(--newsitem-color);
-        padding: 16px;
+        padding: var(--bubble-padding) var(--bubble-padding) 0;
         display: flex;
         flex-direction: column;
         cursor: pointer;
@@ -122,18 +122,26 @@ export class NewsItem extends LitElement {
       .details {
         order: 3;
         display: grid;
-        grid-template-rows: 0fr;
-        overflow: hidden;
-        transition: grid-template-rows var(--opening-duration);
-      }
-
-      .active .details {
-        margin-top: 1.3em;
+        max-height: 0;
         grid-template-rows: 1fr;
+        overflow: hidden;
+        margin-bottom: var(--bubble-padding);
+
+        /* Create View Timeline */
+        view-timeline-name: --revealing-item;
+        view-timeline-axis: y;
+
+        /* Attach animation, linked to the  View Timeline */
+        animation: linear reveal both;
+        animation-timeline: --revealing-item;
+
+        /* Tweak range when effect should run*/
+        animation-range: cover 30% contain 100%;
       }
 
       .header {
         order: 2;
+        margin-bottom: var(--bubble-padding);
       }
 
       .title {
@@ -141,6 +149,7 @@ export class NewsItem extends LitElement {
         font-size: 1.25rem;
         font-weight: 500;
         line-height: 1.3;
+        text-wrap: balance;
         margin: 0;
       }
 
@@ -187,6 +196,7 @@ export class NewsItem extends LitElement {
         font-weight: 400;
         margin: 0;
         order: 2;
+        text-wrap: pretty;
 
         /* display: -webkit-box;
         -webkit-line-clamp: var(--max-visible-lead-lines);
@@ -201,7 +211,26 @@ export class NewsItem extends LitElement {
         justify-self: center;
       }
 
-      .expander {
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          max-height: 0;
+        }
+        40% {
+          opacity: 1;
+          max-height: 400px;
+        }
+        50% {
+          opacity: 1;
+          max-height: 400px;
+        }
+        to {
+          opacity: 0;
+          max-height: 0;
+        }
+      }
+
+      /* .expander {
         display: grid;
         min-height: 0;
         transition: visibility var(--opening-duration);
@@ -215,7 +244,7 @@ export class NewsItem extends LitElement {
       .newsitem.active {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         transform: scale(1.02);
-      }
+      } */
     `
   ]
 }
