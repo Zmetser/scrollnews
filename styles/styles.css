@@ -1,5 +1,7 @@
 /* layout */
 :root {
+  color-scheme: light dark;
+
   --max-visible-lead-lines: 5;
   --media-ratio: 16/9;
   --animation-duration: 0.25s;
