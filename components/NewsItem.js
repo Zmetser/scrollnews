@@ -1,10 +1,8 @@
 import { LitElement, html, css } from 'lit'
-import { ContextConsumer } from '@lit/context'
 import { classMap } from 'lit/directives/class-map.js'
 import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 import { styleMap } from 'lit/directives/style-map.js'
 
-import { scrollObserverContext } from '../utils/contexts'
 import { getAbsoluteTimeString } from '../utils/dateUtils'
 import { categoryStyleMapFor } from '../utils/categoryUtils'
 import './media/LazyImage'
@@ -41,8 +39,6 @@ export class NewsItem extends LitElement {
     `
   }
 
-  // create a new context consumer for the intersection observer
-  _observer = new ContextConsumer(this, { context: scrollObserverContext })
   // url to the article
   _permalink = ''
   // url to the publisher's main page
@@ -71,12 +67,28 @@ export class NewsItem extends LitElement {
 
   // observe the element when it is first updated
   firstUpdated() {
-    this._observer.value.observe(this)
+    const $root = this.renderRoot.querySelector('.newsitem')
+    const $details = this.renderRoot.querySelector('.details')
+    $details.animate(
+      [
+        { maxHeight: 0 },
+        { maxHeight: '500px' },
+        { maxHeight: 0 }
+      ],
+      {
+        fill: 'both',
+        timeline: new window.ViewTimeline({
+          axis: 'block',
+          subject: $root
+          // inset: [CSS.percent(0), CSS.percent(20)]
+        }),
+        rangeStart: 'cover 20%',
+        rangeEnd: 'contain 100%'
+      }
+    )
   }
 
   disconnectedCallback() {
-    // disconnect the observer when the component is disconnected
-    this._observer.value.unobserve(this)
     super.disconnectedCallback()
   }
 
@@ -126,17 +138,6 @@ export class NewsItem extends LitElement {
         grid-template-rows: 1fr;
         overflow: hidden;
         margin-bottom: var(--bubble-padding);
-
-        /* Create View Timeline */
-        view-timeline-name: --revealing-item;
-        view-timeline-axis: y;
-
-        /* Attach animation, linked to the  View Timeline */
-        animation: linear reveal both;
-        animation-timeline: --revealing-item;
-
-        /* Tweak range when effect should run*/
-        animation-range: cover 30% contain 100%;
       }
 
       .header {
@@ -197,10 +198,6 @@ export class NewsItem extends LitElement {
         margin: 0;
         order: 2;
         text-wrap: pretty;
-
-        /* display: -webkit-box;
-        -webkit-line-clamp: var(--max-visible-lead-lines);
-        -webkit-box-orient: vertical; */
       }
 
       lazy-image {
@@ -210,41 +207,6 @@ export class NewsItem extends LitElement {
         margin: 0 0 1.3em 0;
         justify-self: center;
       }
-
-      @keyframes reveal {
-        from {
-          opacity: 0;
-          max-height: 0;
-        }
-        40% {
-          opacity: 1;
-          max-height: 400px;
-        }
-        50% {
-          opacity: 1;
-          max-height: 400px;
-        }
-        to {
-          opacity: 0;
-          max-height: 0;
-        }
-      }
-
-      /* .expander {
-        display: grid;
-        min-height: 0;
-        transition: visibility var(--opening-duration);
-        visibility: hidden;
-      }
-
-      .active .expander {
-        visibility: visible;
-      }
-
-      .newsitem.active {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transform: scale(1.02);
-      } */
     `
   ]
 }
