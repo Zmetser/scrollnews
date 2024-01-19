@@ -7,7 +7,7 @@ import './components/Categories'
 
 import { fetchNews } from './utils/dataFetcher'
 import { Cache } from './utils/cache'
-import { filterByCategory, CATEGORIES } from './utils/categoryUtils'
+import { filterByCategory, CATEGORIES, CATEGORY_DEFAULT } from './utils/categoryUtils'
 
 export class App extends LitElement {
   render() {
@@ -47,7 +47,7 @@ export class App extends LitElement {
     // By default populate the categories with all the categories
     this._availableCategories = CATEGORIES
     // By default no category is selected
-    this._selectedCategory = null
+    this._selectedCategory = CATEGORY_DEFAULT
   }
 
   connectedCallback() {
@@ -70,7 +70,7 @@ export class App extends LitElement {
     const category = event.detail.category
     // reset the selected category if it's already selected
     if (category === this._selectedCategory) {
-      this._selectedCategory = null
+      this._selectedCategory = CATEGORY_DEFAULT
       return
     }
     this._selectedCategory = category

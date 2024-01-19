@@ -1,3 +1,5 @@
+export const CATEGORY_DEFAULT = 'home'
+
 // we could gather the categories from the items, but then we would have to dynamically
 // generate the classes for the categories, which would make me inject css after data fetch
 export const CATEGORIES = [
@@ -35,11 +37,11 @@ export function categoryStyleMapFor(category) {
   }
 }
 
-export function filterByCategory(items, topic) {
-  if (!topic) {
+export function filterByCategory(items, category) {
+  if (!category || category === CATEGORY_DEFAULT) {
     return items
   }
-  return items.filter((item) => item.topic === topic)
+  return items.filter((item) => item.topic === category)
 }
 
 // get all the unique categories from the items

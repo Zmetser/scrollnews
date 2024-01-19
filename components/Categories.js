@@ -4,11 +4,20 @@ import { repeat } from 'lit/directives/repeat.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { styleMap } from 'lit/directives/style-map.js'
 
-import { categoryStyleMapFor } from '../utils/categoryUtils'
+import { categoryStyleMapFor, CATEGORY_DEFAULT } from '../utils/categoryUtils'
 
 export class Categories extends LitElement {
   render() {
     return html`
+      <a
+        class="category-button ${classMap({
+          selected: this.selectedCategory === CATEGORY_DEFAULT
+        })}"
+        style="--category-color: var(--category-color-home)"
+        @click=${{ handleEvent: () => this.onCategorySelect(CATEGORY_DEFAULT) }}
+      >
+        Home
+      </a>
       ${repeat(
         this.availableCategories,
         (category) => category,
