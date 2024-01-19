@@ -5,6 +5,7 @@ import { styleMap } from 'lit/directives/style-map.js'
 
 import { getAbsoluteTimeString } from '../utils/dateUtils'
 import { categoryStyleMapFor } from '../utils/categoryUtils'
+import { getKeyframeOptions } from '../utils/animationConfig'
 import './media/LazyImage'
 
 export class NewsItem extends LitElement {
@@ -75,16 +76,16 @@ export class NewsItem extends LitElement {
         { maxHeight: '500px' },
         { maxHeight: 0 }
       ],
-      {
-        fill: 'both',
-        timeline: new window.ViewTimeline({
-          axis: 'block',
-          subject: $root
-          // inset: [CSS.percent(0), CSS.percent(20)]
-        }),
-        rangeStart: 'cover 20%',
-        rangeEnd: 'contain 100%'
-      }
+      getKeyframeOptions($root)
+    )
+
+    $root.animate(
+      [
+        { opacity: 0.7 },
+        { opacity: 1 },
+        { opacity: 0.7 }
+      ],
+      getKeyframeOptions($root)
     )
   }
 
