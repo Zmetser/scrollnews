@@ -1,12 +1,11 @@
 import { LitElement, html, css } from 'lit'
-import { ContextConsumer } from '@lit/context'
 import { classMap } from 'lit/directives/class-map.js'
 import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 import { styleMap } from 'lit/directives/style-map.js'
 
-import { scrollObserverContext } from '../utils/contexts'
 import { getAbsoluteTimeString } from '../utils/dateUtils'
 import { categoryStyleMapFor } from '../utils/categoryUtils'
+import { getKeyframeOptions } from '../utils/animationConfig'
 import './media/LazyImage'
 
 export class NewsItem extends LitElement {
@@ -27,10 +26,8 @@ export class NewsItem extends LitElement {
           </h2>
         </header>
         <div class="details">
-          <div class="expander">
-            <p class="lead">${unsafeHTML(this.item.lead)}</p>
-            <lazy-image src="${this.item.image}"></lazy-image>
-          </div>
+          <p class="lead">${unsafeHTML(this.item.lead)}</p>
+          <lazy-image src="${this.item.image}"></lazy-media>
         </div>
         <footer>
           <span class="source">${this.item.source}</span>
@@ -43,8 +40,6 @@ export class NewsItem extends LitElement {
     `
   }
 
-  // create a new context consumer for the intersection observer
-  _observer = new ContextConsumer(this, { context: scrollObserverContext })
   // url to the article
   _permalink = ''
   // url to the publisher's main page
@@ -73,12 +68,28 @@ export class NewsItem extends LitElement {
 
   // observe the element when it is first updated
   firstUpdated() {
-    this._observer.value.observe(this)
+    const $root = this.renderRoot.querySelector('.newsitem')
+    const $details = this.renderRoot.querySelector('.details')
+    $details.animate(
+      [
+        { maxHeight: 0 },
+        { maxHeight: '500px' },
+        { maxHeight: 0 }
+      ],
+      getKeyframeOptions($root)
+    )
+
+    $root.animate(
+      [
+        { opacity: 0.7 },
+        { opacity: 1 },
+        { opacity: 0.7 }
+      ],
+      getKeyframeOptions($root)
+    )
   }
 
   disconnectedCallback() {
-    // disconnect the observer when the component is disconnected
-    this._observer.value.unobserve(this)
     super.disconnectedCallback()
   }
 
@@ -95,9 +106,11 @@ export class NewsItem extends LitElement {
   static styles = [
     css`
       .newsitem {
+        --bubble-padding: 16px;
+
         background-color: var(--newsitem-bg-color);
         color: var(--newsitem-color);
-        padding: 16px;
+        padding: var(--bubble-padding) var(--bubble-padding) 0;
         display: flex;
         flex-direction: column;
         cursor: pointer;
@@ -122,18 +135,15 @@ export class NewsItem extends LitElement {
       .details {
         order: 3;
         display: grid;
-        grid-template-rows: 0fr;
-        overflow: hidden;
-        transition: grid-template-rows var(--opening-duration);
-      }
-
-      .active .details {
-        margin-top: 1.3em;
+        max-height: 0;
         grid-template-rows: 1fr;
+        overflow: hidden;
+        margin-bottom: var(--bubble-padding);
       }
 
       .header {
         order: 2;
+        margin-bottom: var(--bubble-padding);
       }
 
       .title {
@@ -141,6 +151,7 @@ export class NewsItem extends LitElement {
         font-size: 1.25rem;
         font-weight: 500;
         line-height: 1.3;
+        text-wrap: balance;
         margin: 0;
       }
 
@@ -187,10 +198,7 @@ export class NewsItem extends LitElement {
         font-weight: 400;
         margin: 0;
         order: 2;
-
-        /* display: -webkit-box;
-        -webkit-line-clamp: var(--max-visible-lead-lines);
-        -webkit-box-orient: vertical; */
+        text-wrap: pretty;
       }
 
       lazy-image {
@@ -199,22 +207,6 @@ export class NewsItem extends LitElement {
         aspect-ratio: var(--media-ratio);
         margin: 0 0 1.3em 0;
         justify-self: center;
-      }
-
-      .expander {
-        display: grid;
-        min-height: 0;
-        transition: visibility var(--opening-duration);
-        visibility: hidden;
-      }
-
-      .active .expander {
-        visibility: visible;
-      }
-
-      .newsitem.active {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transform: scale(1.02);
       }
     `
   ]
