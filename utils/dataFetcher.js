@@ -3,8 +3,7 @@ import { gatherCategoriesFrom, CATEGORIES } from '../utils/categoryUtils'
 import { toTimestamp } from '../utils/dateUtils'
 
 const REMOTE_URL =
-  'https://stories-test-78664cfb8416.herokuapp.com/?randomize-media=true'
-// const REMOTE_URL = 'http://localhost:3000/?randomize-media=true'
+  'https://us-central1-scrollnews-proxy.cloudfunctions.net/app?randomize-media=true'
 
 export const fetchNews = async (signal) => {
   // Artificial delay for demo purposes
