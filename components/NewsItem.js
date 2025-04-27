@@ -23,6 +23,7 @@ export class NewsItem extends LitElement {
             <a href="${this._permalink}" target="_blank">${unsafeHTML(
       this.item.title
     )}</a>
+        <span>${this.item.topic}</span>
           </h2>
         </header>
         <div class="details">
@@ -106,6 +107,7 @@ export class NewsItem extends LitElement {
   static styles = [
     css`
       .newsitem {
+        flex-shrink: 0;
         --bubble-padding: 16px;
 
         background-color: var(--newsitem-bg-color);

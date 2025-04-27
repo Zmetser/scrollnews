@@ -15,8 +15,18 @@ export const CATEGORIES = [
   'Sport'
 ]
 
-const categorySlugMap = CATEGORIES.reduce((map, category) => {
-  map[category] = slugify(category)
+/**
+ * Array of categories as slugs.
+ * @type {Array<string>}
+ */
+const categoriesSafe = CATEGORIES.map((category) => slugify(category))
+
+/**
+ * Map of category names to their corresponding slugs.
+ * @type {Object.<string, string>}
+ */
+const categorySlugMap = CATEGORIES.reduce((map, category, index) => {
+  map[category] = categoriesSafe[index]
   return map
 }, {})
 
@@ -41,7 +51,25 @@ export function filterByCategory(items, category) {
   if (!category || category === CATEGORY_DEFAULT) {
     return items
   }
+  console.log(category, items.filter((item) => item.topic === category))
   return items.filter((item) => item.topic === category)
+}
+
+/**
+ * Returns the next category based on the given category.
+ * If the given category is not found in the list of categories, returns the default category.
+ *
+ * @param {string} category - The current category.
+ * @returns {string} - The next category.
+ */
+export function getNextCategory(category) {
+  const index = CATEGORIES.indexOf(category)
+  if (index < 0) {
+    console.log(CATEGORIES[0])
+    return CATEGORIES[0]
+  }
+  console.log(CATEGORIES[(index + 1) % CATEGORIES.length])
+  return CATEGORIES[(index + 1) % CATEGORIES.length]
 }
 
 // get all the unique categories from the items

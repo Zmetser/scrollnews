@@ -7,7 +7,12 @@ import './components/Categories'
 
 import { fetchNews } from './utils/dataFetcher'
 import { Cache } from './utils/cache'
-import { filterByCategory, CATEGORIES, CATEGORY_DEFAULT } from './utils/categoryUtils'
+import {
+  filterByCategory,
+  getNextCategory,
+  CATEGORIES,
+  CATEGORY_DEFAULT
+} from './utils/categoryUtils'
 
 export class App extends LitElement {
   render() {
@@ -21,14 +26,29 @@ export class App extends LitElement {
         ></news-categories>
       </div>
 
-      <!-- Show placeholders when cache is cold and data is loading -->
-      ${this._items.length === 0 && this._dataTask.status === TaskStatus.PENDING
-        ? html`<news-items-placeholder></news-items-placeholder>`
-        : html`<news-items
-            .items=${filterByCategory(this._items, this._selectedCategory)}
-            .previusUpdate=${this._previusUpdate}
-            .selectedCategory=${this._selectedCategory}
-          ></news-items>`}
+      <div class="columns">
+        <div class="current-category">
+          <!-- Show placeholders when cache is cold and data is loading -->
+          ${this._items.length === 0 &&
+          this._dataTask.status === TaskStatus.PENDING
+            ? html`<news-items-placeholder></news-items-placeholder>`
+            : html`<news-items
+                .items=${filterByCategory(this._items, this._selectedCategory)}
+                .previusUpdate=${this.previusUpdate}
+                .selectedCategory=${this._selectedCategory}
+              ></news-items>`}
+        </div>
+        <div class="next-category">
+          ${this._items.length > 0 &&
+          html`
+            <news-items
+              .items=${filterByCategory(this._items, this.nextCategory)}
+              .previusUpdate=${this.previusUpdate}
+              .selectedCategory=${this.nextCategory}
+            ></news-items>
+          `}
+        </div>
+      </div>
 
       <!-- Show error message when couldn't refresh -->
       ${this._dataTask.status === TaskStatus.ERROR
@@ -37,13 +57,14 @@ export class App extends LitElement {
     `
   }
 
-  _itemsFromCache = Cache.getItemsFromCache()
-  _previusUpdate = Cache.getState().latestItemTimestamp
+  itemsFromCache = Cache.getItemsFromCache()
+  previusUpdate = Cache.getState().latestItemTimestamp
+  nextCategory = getNextCategory(CATEGORY_DEFAULT)
 
   constructor() {
     super()
     // Show items from cache until we get new items
-    this._items = this._itemsFromCache
+    this._items = this.itemsFromCache
     // By default populate the categories with all the categories
     this._availableCategories = CATEGORIES
     // By default no category is selected
@@ -75,6 +96,10 @@ export class App extends LitElement {
     }
     this._selectedCategory = category
   }
+
+  // updated() {
+  //   this.nextCategory = getNextCategory(this._selectedCategory)
+  // }
 
   static properties = {
     // All the items
@@ -114,6 +139,39 @@ export class App extends LitElement {
       }
       h1 strong {
         font-family: Roboto, sans-serif;
+      }
+
+      .columns {
+        position: relative;
+      }
+
+      .current-category,
+      .next-category {
+        will-change: transform;
+        transition: 1s transform cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .current-category {
+        transform: translateX(0);
+      }
+
+      .next-category {
+        position: absolute;
+        width: 100vw;
+        height: auto;
+        top: 0;
+        transform: translateX(100vw);
+        display: none;
+      }
+
+      .change-forward {
+        .next-category {
+          transform: translateX(0);
+          display: block;
+        }
+        .previous-category {
+          transform: translateX(-100vw);
+        }
       }
     `
   ]
